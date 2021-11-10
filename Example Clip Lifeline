@@ -79,6 +79,28 @@ var BitPrecision_HDR	= 3;
 
 var NOT_SET = "-400000";
 
+
+////////////// QE Example /////////////////
+app.enableQE();
+
+var seq = qe.project.getActiveSequence();
+
+Then you will have access to:
+
+addTracks()
+removeTracks()
+removeVideoTrack()
+removeAudioTrack()
+removeEmptyVideoTracks()
+removeEmptyAudioTracks()
+
+No documentation on QE. Just kinda got test things out.
+Might also help to know that you target tracks by using:
+
+seq.getVideoTrackAt(x);
+
+///////////////////////////////////////////
+
 $._PPP_={
 
 	createDeepFolderStructure : function (foldersArray, maxDepth) {
@@ -1857,7 +1879,7 @@ $._PPP_={
 		}
 	},
 
-	importMoGRT : function () {
+	importMoGRT : function () { ////////////////////////////////////////////
 		var activeSeq = app.project.activeSequence;
 		if (activeSeq) {
 			var filterString = "";

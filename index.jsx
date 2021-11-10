@@ -1,3 +1,5 @@
+//import { DSLR } from './constants.js'
+
 
 function addClipsToProject(filePath) {
     var videoFile = new File([ filePath ])
@@ -49,11 +51,65 @@ function changeSequenceSettings(editMode, frmWidth, frmHeight, prevFrmWidth, pre
 
     selectedSequence.setSettings(seqSettings)
 
+} //break this up into multiple smaller functions?
+
+
+function displayTrackClips() {
+    var firstAudioTrack = app.project.sequences[0].audioTracks[2]
+    var firstVidTrack = app.project.sequences[0].videoTracks[2]
+    var firstAudioTrackName = app.project.sequences[0].audioTracks[0].name
+    var firstVidTrackName = app.project.sequences[0].videoTracks[0].name
+
+    $.writeln("first audio and video track names: " + firstAudioTrackName + " " + firstVidTrackName)
+    $.writeln("first audio/video track :" + firstAudioTrack + " " + firstVidTrack)
+
+    $.writeln("Video track clips info: ")
+    $.writeln(" ")
+    for(var i = 0; i < firstVidTrack.clips.numItems; i++) {
+        $.writeln("clip " + (i + 1))
+        $.writeln("name: " + firstVidTrack.clips[i].name)
+        $.writeln("obj: " + firstVidTrack.clips[i])
+        $.writeln("type of obj: " + typeof(firstVidTrack.clips[i]))
+        $.writeln(" ")
+    }
+
+    $.writeln("Audio track clips info: ")
+    $.writeln(" ")
+    for(var i = 0; i < firstAudioTrack.clips.numItems; i++) {
+        $.writeln("clip " + (i + 1))
+        $.writeln("name: " + firstVidTrack.clips[i].name)
+        $.writeln("obj: " + firstVidTrack.clips[i])
+        $.writeln("type of obj: " + typeof(firstVidTrack.clips[i]))
+        $.writeln(" ")
+    }
 }
 
-addClipsToProject('~/Desktop/Workspace/mass_variation/Videos/')
-createSeqFromClips('Huge Sequence', 'coolid123')
-changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
+function removeAllEmptyTracks() {
+    app.enableQE()
 
+    var seq = qe.project.getActiveSequence()
+    seq.removeEmptyAudioTracks()
+    seq.removeEmptyVideoTracks()
+}
 
+//addClipsToProject('~/Desktop/Workspace/mass_variation/Videos/')
+//createSeqFromClips('Huge Sequence', 'coolid123')
+//changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
+removeAllEmptyTracks()
 
+/*
+
+app.enableQE();
+
+var seq = qe.project.getActiveSequence();
+
+Then you will have access to:
+
+addTracks()
+removeTracks()
+removeVideoTrack()
+removeAudioTrack()
+removeEmptyVideoTracks()
+removeEmptyAudioTracks() 
+
+*/
