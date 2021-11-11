@@ -92,43 +92,61 @@ function removeAllEmptyTracks() {
     seq.removeEmptyVideoTracks()
 }
 
+function addNewClipsToTrack(folderName, trackIndex) {
+    var childArr = app.project.rootItem.children
+    var selectedSequence = app.project.sequences[0]
+    var numVideoTracks = 0
+    var selectedFolder = null
+
+    for(var i = 0; i < childArr.numItems; i++) {
+
+        if(childArr[i].name !== folderName) {
+            i++
+        } else {
+            numVideoTracks = selectedSequence.videoTracks.numTracks
+            $.writeln(numVideoTracks)
+            selectedFolder = childArr[i]
+            if(trackIndex > numVideoTracks - 1) {
+                createTracks(trackIndex)
+            }
+        }
+    }
+
+    for(var j = 0; j < selectedFolder.children.length; j++) {
+        
+        var targetVTrack = selectedSequence.videoTracks[trackIndex]
+        var clipToInsert = selectedFolder.children[j]  
+
+        if (targetVTrack.clips.numItems > 0) {
+            var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)];
+            targetVTrack.insertClip(clipToInsert, lastClip.end.seconds);  
+        } else {
+            var timeAtZero = new Time();
+            targetVTrack.insertClip(clipToInsert, timeAtZero.seconds);
+        }
+    }
+}
+
+function createTracks(numberOfTracks) {
+    app.enableQE()
+    var seq = qe.project.getActiveSequence()
+    var currentNumVideoTracks = app.project.sequences[0].videoTracks.numTracks
+    while(numberOfTracks > currentNumVideoTracks - 1) {
+        seq.addTracks()
+        currentNumVideoTracks = app.project.sequences[0].videoTracks.numTracks
+    }
+}
+
+
 //addClipsToProject('~/Desktop/Workspace/mass_variation/Videos/')
 //createSeqFromClips('Huge Sequence', 'coolid123')
 //changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
 //removeAllEmptyTracks()
 //addClipsToProject('~/Desktop/Workspace/Clips')
+//addNewClipsToTrack('Clips', 4)
+//addNewClipsToTrack('Videos', 2)
 
 
-
-function addNewClips(folderName) {
-    var childArr = app.project.rootItem.children
-    var selectedSequence = app.project.sequences[0]
-    $.writeln(selectedSequence.name)
-    for(var i = 0; i < childArr.numItems; i++) {
-        $.writeln(childArr[i].name)
-        if(childArr[i].name !== folderName) {
-            i++
-        } else {
-            var selectedFolder = childArr[i]
-            //$.writeln(selectedFolder.name)
-            for(var j = 0; j < selectedFolder.children.length; j++) {
-                var numVTracks = selectedSequence.videoTracks.numTracks
- 		        var targetVTrack = selectedSequence.videoTracks[(numVTracks - 1)]
-                var clipToInsert = selectedFolder.children[j]
-
-                if (targetVTrack.clips.numItems > 0) {
-                    var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)];
-                    targetVTrack.insertClip(clipToInsert, lastClip.end.seconds);  
-                } else {
-                    var timeAtZero = new Time();
-                    targetVTrack.insertClip(clipToInsert, timeAtZero.seconds);
-                }
-            }
-        }
-    }
-}
-
-addNewClips('Clips')
 /*
 
 app.enableQE();
