@@ -9,7 +9,7 @@ function addClipsToProject(filePath) {
     app.project.importFiles(fileArr, true, testBin, false)
 
     //app.project.importFiles(fileArr, true, app.project.getInsertionBin(), false)
-    //var createTestBin = app.project.rootItem.createBin('Test Bin')
+    //app.project.rootItem.createBin(binName)
 }
 
 function createSeqFromClips(sequenceName, sequenceId) {
@@ -144,7 +144,7 @@ function createTracks(numberOfTracks) {
 //removeAllEmptyTracks()
 //addClipsToProject('~/Desktop/Workspace/Clips')
 //addNewClipsToTrack('Clips', 4)
-//addNewClipsToTrack('Videos', 2)
+addNewClipsToTrack('Videos', 4)
 
 
 /*
@@ -162,4 +162,47 @@ removeAudioTrack()
 removeEmptyVideoTracks()
 removeEmptyAudioTracks() 
 
+
+importMoGRT : function () { ////////////////////////////////////////////
+		var activeSeq = app.project.activeSequence;
+		if (activeSeq) {
+			var filterString = "";
+			if (Folder.fs === 'Windows') {
+				filterString = "Motion Graphics Templates:*.mogrt";
+			}
+			var mogrtToImport = File.openDialog("Choose MoGRT",	// title
+												filterString,	// filter available files? 
+												false);			// allow multiple?
+			if (mogrtToImport) {
+				var targetTime 		= activeSeq.getPlayerPosition();
+				var vidTrackOffset 	= 0;
+				var audTrackOffset 	= 0;
+				var newTrackItem 	= activeSeq.importMGT(	mogrtToImport.fsName,
+															targetTime.ticks,
+															vidTrackOffset,
+															audTrackOffset);
+				if (newTrackItem) {
+					var moComp = newTrackItem.getMGTComponent();
+					if (moComp) {
+						var params = moComp.properties;
+						for (var z = 0; z < params.numItems; z++) {
+							var thisParam = params[0];
+							if (thisParam){
+								$._PPP_.updateEventPanel('Parameter ' + (z + 1) + ' name: ' + thisParam.name + '.');
+							}
+						}
+						var srcTextParam = params.getParamForDisplayName("Source Text");
+						if (srcTextParam) {
+							var val = srcTextParam.getValue();
+							srcTextParam.setValue("New value set by PProPanel!");
+						}
+					}
+				}
+			} else {
+				$._PPP_.updateEventPanel('Unable to import specified .mogrt file.');
+			}
+		} else {
+			$._PPP_.updateEventPanel('No active sequence.');
+		}
+	},
 */
