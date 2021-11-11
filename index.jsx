@@ -1,6 +1,5 @@
 //import { DSLR } from './constants.js'
 
-
 function addClipsToProject(filePath) {
     var videoFile = new File([ filePath ])
     var fileArr = [videoFile.fsName]
@@ -137,15 +136,21 @@ function createTracks(numberOfTracks) {
     }
 }
 
+function addMogrtToTimeline() {
+    var timeAtZero = new Time();
+    var seq = app.project.activeSequence; 
+        if (seq){seq.importMGT(File(('~/Desktop/tt.mogrt')).fsName, timeAtZero, 2, 0); }
+}
 
-//addClipsToProject('~/Desktop/Workspace/mass_variation/Videos/')
+
+//addClipsToProject('~/Desktop/Clips/')
 //createSeqFromClips('Huge Sequence', 'coolid123')
 //changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
 //removeAllEmptyTracks()
-//addClipsToProject('~/Desktop/Workspace/Clips')
-//addNewClipsToTrack('Clips', 4)
+//addClipsToProject('~/Desktop/Clips')
+//addNewClipsToTrack('Clips', 2)
 //addNewClipsToTrack('Videos', 2)
-
+addMogrtToTimeline()
 
 /*
 
