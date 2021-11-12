@@ -136,21 +136,32 @@ function createTracks(numberOfTracks) {
     }
 }
 
-function addMogrtToTimeline() {
-    var timeAtZero = new Time();
-    var seq = app.project.activeSequence; 
-        if (seq){seq.importMGT(File(('~/Desktop/tt.mogrt')).fsName, timeAtZero, 2, 0); }
-}
+//function addMogrtToTimeline() {
+//    var timeAtZero = new Time();
+//    var seq = app.project.activeSequence; 
+//        if (seq){seq.importMGT(File(('~/Desktop/tt.mogrt')).fsName, timeAtZero, 5, 0); }
+//}
 
+//function resizeMogrtToClipSize() {
+//    //Sets the mogrt size to a clip size
+//}
 
-//addClipsToProject('~/Desktop/Clips/')
-//createSeqFromClips('Huge Sequence', 'coolid123')
-//changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
+//function updateMogrtCaption('Text to caption') {
+//    //update the mogrt text fields
+//}
+
+//function updateMogrtFromSRT('srt time code break'){
+//    //addMogrtToTimeline(time code), updateMogrtCaption(text from srt)
+//}
+
+addClipsToProject('~/Desktop/Raw Footage/')
+createSeqFromClips('Huge Sequence', 'coolid123')
+changeSequenceSettings('35d109db-457b-43c1-9452-9cb7be9f121c', 1080, 1080, 1080, 1080, '1:1')
 //removeAllEmptyTracks()
 //addClipsToProject('~/Desktop/Clips')
 //addNewClipsToTrack('Clips', 2)
 //addNewClipsToTrack('Videos', 2)
-addMogrtToTimeline()
+//addMogrtToTimeline()
 
 /*
 
