@@ -110,19 +110,22 @@ function addNewClipsToTrack(folderName, trackIndex) {
             }
         }
     }
+    if(selectedFolder !== null) {
+        for(var j = 0; j < selectedFolder.children.length; j++) {
+            
+            var targetVTrack = selectedSequence.videoTracks[trackIndex]
+            var clipToInsert = selectedFolder.children[j]  
 
-    for(var j = 0; j < selectedFolder.children.length; j++) {
-        
-        var targetVTrack = selectedSequence.videoTracks[trackIndex]
-        var clipToInsert = selectedFolder.children[j]  
-
-        if (targetVTrack.clips.numItems > 0) {
-            var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)];
-            targetVTrack.insertClip(clipToInsert, lastClip.end.seconds);  
-        } else {
-            var timeAtZero = new Time();
-            targetVTrack.insertClip(clipToInsert, timeAtZero.seconds);
+            if (targetVTrack.clips.numItems > 0) {
+                var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)];
+                targetVTrack.insertClip(clipToInsert, lastClip.end.seconds);  
+            } else {
+                var timeAtZero = new Time();
+                targetVTrack.insertClip(clipToInsert, timeAtZero.seconds);
+            }
         }
+    } else {
+        $.writeln("Could not find folder name") 
     }
 }
 
@@ -136,12 +139,102 @@ function createTracks(numberOfTracks) {
     }
 }
 
-function addMogrtToTimeline() {
-    var timeAtZero = new Time();
-    var seq = app.project.activeSequence; 
-        if (seq){seq.importMGT(File(('~/Desktop/tt.mogrt')).fsName, timeAtZero, 2, 0); }
+function addMogrtToTimelineFromFile(filePath, isFromLibrary) {
+    var timeAtZero = new Time()
+    var seq = app.project.activeSequence;
+        if (seq) { 
+            //filename, time, tracknumber, audiotrack
+            seq.importMGT(File((filePath)).fsName, timeAtZero, 2, 0);
+            
+            //sequence.importMGTFromLibrary("Library Name", "MoGRT Name", targetTime.ticks, vidTrackOffset, audTrackOffset);
+        } else {
+            $.writeln("No active sequence found")
+        }
 }
 
+function addMogrtToTimelineFromLibrary(libraryName, mgtName) {
+    var timeAtZero = new Time()
+    var seq = app.project.activeSequence;
+    if (seq) {
+        seq.importMGTFromLibrary(libraryName, mgtName, timeAtZero, 2, 2) //hardcoded for now but will add argument parameters
+    } else {
+        $.writeln("No active sequence found")
+    } 
+}
+
+
+//hook, problem, agitate, product-info, features/USP, product demo, features again?, product result, summary solution
+
+function selectClips(clipFolderName, clipNumber) {
+    
+    var items = app.project.rootItem.children //all project items, hopefully just folders
+    var selectedFolder
+    //find folder that matches the folder name
+    for(var i = 0; i < items.numItems; i++) {
+        if(items[i].name === clipFolderName) {
+            selectedFolder = items[i]
+        }
+    }
+    //get the specific clip you want, add it to the array
+    var allClips = selectedFolder.children 
+    var selectedClip = allClips[clipNumber]
+
+
+    return selectedClip
+}
+
+
+function insertClips(clipArr, trackIndex) { 
+    var selectedSequence = app.project.activeSequence
+    var targetVTrack = selectedSequence.videoTracks[trackIndex]
+    for(var i = 0; i < clipArr.length; i++) {   
+        var clipToInsert = clipArr[i]  
+
+        if (targetVTrack.clips.numItems > 0) {
+            var lastClip = targetVTrack.clips[(targetVTrack.clips.numItems - 1)]
+            targetVTrack.insertClip(clipToInsert, lastClip.end.seconds)
+        } else {
+            var timeAtZero = new Time()
+            targetVTrack.insertClip(clipToInsert, timeAtZero.seconds)
+        }
+    }
+} 
+
+function createStoryBoard(trackIndex) {
+    var fileNames = ['Hooks', 'Problems', 'Agitates', 'Product-info', 'Features', 'Demos', 'Features', 'Results', 'Summary']
+    var clipNumbers = [2, 0, 0, 0, 0, 0, 1, 0, 0]
+    var clipArray = []
+
+    for(var i = 0; i < fileNames.length; i++) {
+        var clip = selectClips(fileNames[i], clipNumbers[i])
+        if(clip) {
+            clipArray.push(clip) 
+        } else {
+            $.writeln("Could not find selected clip")
+        }
+    }
+
+    if(clipArray.length > 0) {
+        insertClips(clipArray, trackIndex)
+        clipArray = []
+    } else {
+        $.writeln("There was a problem adding clips to the array")
+    }
+}
+
+// addClipsToProject('~/Desktop/VideoFiles/Hooks')
+// addClipsToProject('~/Desktop/VideoFiles/Problems')
+// addClipsToProject('~/Desktop/VideoFiles/Agitates')
+// addClipsToProject('~/Desktop/VideoFiles/Product-info')
+// addClipsToProject('~/Desktop/VideoFiles/Features')
+// addClipsToProject('~/Desktop/VideoFiles/Demos')
+// addClipsToProject('~/Desktop/VideoFiles/Results')
+// addClipsToProject('~/Desktop/VideoFiles/Summary') 
+
+//app.project.createNewSequence('Sequence_1', 's1')
+
+//createStoryBoard(0) 
+addMogrtToTimelineFromLibrary('My Library', 'Tik Tok Caption Curvy Colors') //have to copy Mogrt from local temp folder to my library
 
 //addClipsToProject('~/Desktop/Clips/')
 //createSeqFromClips('Huge Sequence', 'coolid123')
@@ -150,7 +243,8 @@ function addMogrtToTimeline() {
 //addClipsToProject('~/Desktop/Clips')
 //addNewClipsToTrack('Clips', 2)
 //addNewClipsToTrack('Videos', 2)
-addMogrtToTimeline()
+//addMogrtToTimeline()
+
 
 /*
 
