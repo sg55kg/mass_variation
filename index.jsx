@@ -210,7 +210,7 @@ function createStoryBoard(trackIndex) {
         if(clip) {
             clipArray.push(clip) 
         } else {
-            $.writeln("Could not find selected clip")
+            $.writeln("Could not find selected clip at index " + i + " folder: " + fileNames[i])
         }
     }
 
@@ -221,6 +221,109 @@ function createStoryBoard(trackIndex) {
         $.writeln("There was a problem adding clips to the array")
     }
 }
+
+function editMogrtTopText(trackIndex, clipIndex, newText) {
+    var seq = app.project.activeSequence
+    var mogrtClip = seq.videoTracks[trackIndex].clips[clipIndex]
+    $.writeln(mogrtClip.name)
+    mogrtClip.setSelected(true, true)
+
+    if(mogrtClip) {
+        var components = mogrtClip.getMGTComponent()
+        for(var i = 0; i < components.properties.numItems; i++) {
+            $.writeln(components.properties[i].displayName)
+            if(components.properties[i].displayName === 'Top Text') {
+                components.properties.getParamForDisplayName(components.properties[i].displayName).setValue(newText)
+            }
+        }
+    } else {
+        $.writeln("Error. Mogrt not found.")
+    }
+}
+
+function editMogrtBottomText(trackIndex, clipIndex, newText) {
+    var seq = app.project.activeSequence
+    var mogrtClip = seq.videoTracks[trackIndex].clips[clipIndex]
+    mogrtClip.setSelected(true, true)
+
+    if(mogrtClip) {
+        var components = mogrtClip.getMGTComponent()
+        for(var i = 0; i < components.properties.numItems; i++) {
+            $.writeln(components.properties[i].displayName)
+            if(components.properties[i].displayName === 'Bottom Text') {
+                components.properties.getParamForDisplayName(components.properties[i].displayName).setValue(newText)
+            }
+        }
+    } else {
+        $.writeln("Error. Mogrt not found.")
+    }
+}
+
+function editMogrtTextColor(trackIndex, clipIndex, alpha, red, green, blue) {
+    var seq = app.project.activeSequence
+    var mogrtClip = seq.videoTracks[trackIndex].clips[clipIndex]
+    mogrtClip.setSelected(true, true)
+
+    if(mogrtClip) {
+        var components = mogrtClip.getMGTComponent()
+        for(var i = 0; i < components.properties.numItems; i++) {
+            if(components.properties[i].displayName === 'Text Color') {
+                components.properties[i].setColorValue(alpha, red, green, blue, true)
+                //$.writeln(components.properties[i].getColorValue())
+            }
+        }
+    } else {
+        $.writeln("Error. Mogrt not found.")
+    }
+}
+
+function editMogrtBoxColor(trackIndex, clipIndex, alpha, red, green, blue) {
+    var seq = app.project.activeSequence
+    var mogrtClip = seq.videoTracks[trackIndex].clips[clipIndex]
+    mogrtClip.setSelected(true, true)
+
+    if(mogrtClip) {
+        var components = mogrtClip.getMGTComponent()
+        for(var i = 0; i < components.properties.numItems; i++) {
+            if(components.properties[i].displayName === 'Box Color') {
+                components.properties[i].setColorValue(alpha, red, green, blue, true)
+            }
+        }
+    } else {
+        $.writeln("Error. Mogrt not found.")
+    }
+}
+
+function editMogrtScale(trackIndex, clipIndex, scaleNum) {
+    var seq = app.project.activeSequence
+    var mogrtClip = seq.videoTracks[trackIndex].clips[clipIndex]
+    mogrtClip.setSelected(true, true)
+
+    if(mogrtClip) {
+        var components = mogrtClip.components
+        // $.writeln(components[0].properties.numItems)
+        // $.writeln(components[1].properties.numItems)
+        // $.writeln(components[2].properties.numItems)
+        // $.writeln(components[1].properties[2].displayName)
+   
+        for(var i = 0; i < components[1].properties.numItems; i++) {
+            $.writeln(components[1].properties[i].displayName)
+            $.writeln(components[1].properties[i].getValue())
+            $.writeln(typeof(components[1].properties[i].getValue()))
+            // if(components[1].properties[i].displayName === 'Scale') {
+            //     
+            //     components[1].properties[i].setValue(scaleNum)
+            //     
+            // }
+        }
+    }
+}
+
+// editMogrtTopText(2, 0, "this mogrt")
+// editMogrtBottomText(2, 0, "was changed with javascript")
+// editMogrtTextColor(2, 0, 255, 17, 50, 17)
+// editMogrtBoxColor(2, 0, 255, 150, 90, 100)
+editMogrtScale(2, 0, 70)
 
 // addClipsToProject('~/Desktop/VideoFiles/Hooks')
 // addClipsToProject('~/Desktop/VideoFiles/Problems')
@@ -234,7 +337,7 @@ function createStoryBoard(trackIndex) {
 //app.project.createNewSequence('Sequence_1', 's1')
 
 //createStoryBoard(0) 
-addMogrtToTimelineFromLibrary('My Library', 'Tik Tok Caption Curvy Colors') //have to copy Mogrt from local temp folder to my library
+//addMogrtToTimelineFromLibrary('My Library', 'Tik Tok Caption Curvy Colors') //have to copy Mogrt from local temp folder to my library
 
 //addClipsToProject('~/Desktop/Clips/')
 //createSeqFromClips('Huge Sequence', 'coolid123')
