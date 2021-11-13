@@ -139,7 +139,7 @@ function createTracks(numberOfTracks) {
     }
 }
 
-function addMogrtToTimelineFromFile(filePath, isFromLibrary) {
+function addMogrtToTimelineFromFile(filePath) {
     var timeAtZero = new Time()
     var seq = app.project.activeSequence;
         if (seq) { 

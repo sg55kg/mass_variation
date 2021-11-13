@@ -48,3 +48,60 @@ Add new clips to track:
 Arguments: bin name (string), desired track index (number - zero based index)
 
 Result: Loops through project items to find the folder that matches the name inputted, then checks if the clips can be added onto the desired track. If there are not enough tracks, it calls createTracks(). Then it loops through all of the clips inside the bin and inserts them onto the desired track. 
+
+
+Create tracks:
+
+Arguments: total number of video tracks you want the sequence to have (number)
+
+Result: Creates video tracks up to the number you entered. Will need to add a similar function for audio tracks
+
+
+Add Mogrt to timeline from file:
+
+Arguments:
+
+Result:
+
+
+Add Mogrt to timeline from library:
+
+Arguments:
+
+Result:
+
+
+Select clips:
+
+Arguments:
+
+Result:
+
+
+insertClips:
+
+Arguments:
+
+Result:
+
+
+Create story board:
+
+Arguments: track index (number)
+
+Result:
+
+
+Edit Mogrt top text:
+
+
+Edit Mogrt bottom text:
+
+
+Edit Mogrt text color:
+
+
+Edit Mogrt box color:
+
+
+Edit Mogrt scale: (in progress)
