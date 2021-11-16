@@ -16,7 +16,7 @@
             "type": "extendscript-debug",
             "request": "launch",
             "name": "Run debug",
-            "program": "${workspaceFolder}/index.jsx",
+            "program": "${workspaceFolder}/test.js",
             "stopOnEntry": false
         },
         {

@@ -200,7 +200,7 @@ function insertClips(clipArr, trackIndex) {
     }
 } 
 
-function createStoryBoard(trackIndex) {
+function createMainStoryBoard(trackIndex) {
     var fileNames = ['Hooks', 'Problems', 'Agitates', 'Product-info', 'Features', 'Demos', 'Features', 'Results', 'Summary']
     var clipNumbers = [2, 0, 0, 0, 0, 0, 1, 0, 0]
     var clipArray = []
@@ -220,6 +220,23 @@ function createStoryBoard(trackIndex) {
     } else {
         $.writeln("There was a problem adding clips to the array")
     }
+}
+
+function createSubStoryBoard(trackIndex, parentTrackIndex) {
+    var fileName = "B_roll" //can add these to arrays so it can be run multiple times easily
+    var clipNumber = 0
+    var parentClipIndex = 2
+
+    var clip = selectClips(fileName, clipNumber)
+    var selectedSequence = app.project.activeSequence
+    if(selectedSequence.videoTracks.numItems < (trackIndex + 1)) {
+        createTracks(trackIndex + 1) //problem: it moves the current tracks up higher instead of keeping them the same
+    }
+    var targetVTrack = selectedSequence.videoTracks[trackIndex]
+    var parentTrack = selectedSequence.videoTracks[parentTrackIndex]
+
+    var parentClip = parentTrack.clips[parentClipIndex]
+    targetVTrack.insertClip(clip, parentClip.start.seconds)
 }
 
 function editMogrtTopText(trackIndex, clipIndex, newText) {
@@ -319,11 +336,17 @@ function editMogrtScale(trackIndex, clipIndex, scaleNum) {
     }
 }
 
+function jsTest(test) {
+    $.writeln(test)
+}
+
+//createSubStoryBoard(2, 0)
+
 // editMogrtTopText(2, 0, "this mogrt")
 // editMogrtBottomText(2, 0, "was changed with javascript")
 // editMogrtTextColor(2, 0, 255, 17, 50, 17)
 // editMogrtBoxColor(2, 0, 255, 150, 90, 100)
-editMogrtScale(2, 0, 70)
+//editMogrtScale(2, 0, 70)
 
 // addClipsToProject('~/Desktop/VideoFiles/Hooks')
 // addClipsToProject('~/Desktop/VideoFiles/Problems')
@@ -333,6 +356,8 @@ editMogrtScale(2, 0, 70)
 // addClipsToProject('~/Desktop/VideoFiles/Demos')
 // addClipsToProject('~/Desktop/VideoFiles/Results')
 // addClipsToProject('~/Desktop/VideoFiles/Summary') 
+//addClipsToProject('~/Desktop/B_roll')
+
 
 //app.project.createNewSequence('Sequence_1', 's1')
 

@@ -85,7 +85,7 @@ Arguments:
 Result:
 
 
-Create story board:
+Create main story board:
 
 Arguments: track index (number)
 
